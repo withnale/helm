@@ -24,7 +24,7 @@
 
 # Global defaults (can be overridden per test)
 reporting:
-  version: 'v1.0-1-g343432'
+  version: 'v2.7.0-74-ge700bbba'
   enabled: false
   url: 'http://localhost:8080/report'
 
