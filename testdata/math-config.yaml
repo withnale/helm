@@ -24,7 +24,7 @@
 
 # Global defaults (can be overridden per test)
 reporting:
-  version: 'v2.7.0-74-ge700bbba'
+  version: 'v1.0-1-g343432'
   enabled: false
   url: 'http://localhost:8080/report'
 
@@ -34,6 +34,17 @@ defaults:
 
 # Test definitions (indexed by test ID)
 definitions:
+  add-3-single-digit:
+    name: Add 3 single digits
+    enabled: true
+    config:
+      - operation: '{a} + {b} + {c}'
+        vars:
+          a: '1..5'
+          b: '1..5'
+          c: '1..5'
+        answerConstraint: '1..15'
+    reuseAnswers: true
   make-10:
     name: Make 10
     enabled: false
@@ -320,6 +331,7 @@ sections:
           - xxx-addsub-x0s
           - xxx-addsub-9
           - add-x-to-x0
+          - add-3-single-digit
 
   - id: times-tables
     name: Times Tables
