@@ -1,0 +1,350 @@
+# Math Slayer Test Configuration
+#
+# STRUCTURE:
+#   1. defaults     - Global settings (timeLimit, answerCount)
+#   2. definitions  - Test details (name, enabled, config) indexed by test ID
+#   3. sections     - Navigation structure (just references test IDs)
+#
+# BENEFITS:
+#   - Test details defined once, referenced many times
+#   - Easy to enable/disable tests globally
+#   - Clean separation of content vs. structure
+#   - Sections block stays short and readable
+#
+# CONFIG OPTIONS:
+#   - operation: Math expression (e.g., '{a} + {b}', '{a} % {b}', '({a} + {b}) * 2')
+#     Supported operators: +, -, *, /, % (modulo)
+#     Supports brackets/parentheses for grouping
+#   - vars: Variable ranges (e.g., a: '1..10', b: '1..5:2')
+#   - answerConstraint: Valid answer range (e.g., '1..20')
+#   - timeLimit: Time limit in seconds (overrides default)
+#   - answerCount: Number of answer buttons (overrides default)
+#   - sort: true/false - Sort answers in ascending order (default: false, shuffled)
+#   - reuseAnswers: true/false - Keep same answers, generate questions matching them (default: false)
+
+# Global defaults (can be overridden per test)
+reporting:
+  version: 'v1.0-1-g343432'
+  enabled: false
+  url: 'http://localhost:8080/report'
+
+defaults:
+  timeLimit: 60
+  answerCount: 12
+
+# Test definitions (indexed by test ID)
+definitions:
+  make-10:
+    name: Make 10
+    enabled: false
+
+  addition-within-10:
+    name: Addition within 10
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..10'
+          b: '0..10'
+        answerConstraint: '0..10'
+    answerCount: 11
+    reuseAnswers: true
+    sort: true
+
+  subtraction-within-10:
+    name: Subtraction within 10
+    enabled: true
+    config:
+      - operation: '{a} - {b}'
+        vars:
+          a: '0..10'
+          b: '0..10'
+        answerConstraint: '0..10'
+    answerCount: 11
+    reuseAnswers: true
+    sort: true
+
+
+  doubles-to-10:
+    name: Doubles to 10
+    enabled: true
+    config:
+      - operation: '{a} + {a}'
+        vars:
+          a: '1..9'
+        answerConstraint: '2..10'
+
+  xxx-add-x0s:
+    name: Add multiple of 10
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '1..100'
+          b: '10..90:10'
+        answerConstraint: '1..100'
+    reuseAnswers: true
+    sort: true
+
+  xxx-sub-x0s:
+    name: Subtract multiple of 10
+    enabled: true
+    config:
+      - operation: '{a} - {b}'
+        vars:
+          a: '1..100'
+          b: '10..90:10'
+        answerConstraint: '1..100'
+    reuseAnswers: true
+    sort: true
+
+  xxx-addsub-x0s:
+    name: Add or Subtract multiple of 10
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '1..100'
+          b: '10..90:10'
+        answerConstraint: '1..100'
+      - operation: '{a} - {b}'
+        vars:
+          a: '1..100'
+          b: '10..90:10'
+        answerConstraint: '1..100'
+
+
+  xxx-add-9:
+    name: Adding 9
+    enabled: true
+    config:
+      - operation: '{a} + 9'
+        vars:
+          a: '1..100'
+        answerConstraint: '1..100'
+    reuseAnswers: true
+    sort: true
+
+  xxx-sub-9:
+    name: Subtracting 9
+    enabled: true
+    config:
+      - operation: '{a} - 9'
+        vars:
+          a: '1..100'
+        answerConstraint: '1..100'
+    reuseAnswers: true
+    sort: true
+
+
+  xxx-addsub-9:
+    name: Add or Subtract 9
+    enabled: true
+    config:
+      - operation: '{a} + 9'
+        vars:
+          a: '1..100'
+        answerConstraint: '1..100'
+      - operation: '{a} - 9'
+        vars:
+          a: '1..100'
+        answerConstraint: '1..100'
+    reuseAnswers: true
+
+  add-x-to-x0:
+    name: Add X to multiple of 10
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..9'
+          b: '10..90:10'
+        answerConstraint: '1..100'
+      - operation: '{b} + {a}'
+        vars:
+          a: '0..9'
+          b: '10..90:10'
+        answerConstraint: '1..100'
+    reuseAnswers: true
+    sort: true
+
+
+
+  make-20:
+    name: Make 20
+    enabled: false
+
+  addition-within-20:
+    name: Addition within 20
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..20'
+          b: '0..20'
+        answerConstraint: '0..20'
+    reuseAnswers: true
+    sort: true
+
+  subtraction-within-20:
+    name: Subtraction within 20
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..20'
+          b: '0..20'
+        answerConstraint: '0..20'
+    reuseAnswers: true
+    sort: true
+
+  know-10-and-1:
+    name: Know 10s and 1s
+    enabled: true
+    config:
+      - operation: '{a} / 10'
+        displayText: 'Tens for {a}'
+        vars:
+          a: '10..99'
+        answerConstraint: '0..9'
+      - operation: '{a} % 10'
+        displayText: 'Ones for {a}'
+        vars:
+          a: '10..99'
+        answerConstraint: '0..9'
+    sort: true
+
+
+  add-digit-to-multiple-of-10:
+    name: Add digit to multiple of 10
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..90:10'
+          b: '0..9'
+        answerConstraint: '0..99'
+
+  add-1x-to-multiple-of-10:
+    name: Add 1X to multiple of 10
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..90:10'
+          b: '11..19'
+        answerConstraint: '0..99'
+
+
+  addition-and-subtraction-within-20:
+    name: Addition & Subtraction within 20
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..20'
+          b: '0..20'
+        answerConstraint: '0..20'
+      - operation: '{a} - {b}'
+        vars:
+          a: '0..20'
+          b: '0..20'
+        answerConstraint: '0..20'
+
+  u-plus-u-plus-u:
+    name: U + U + U
+    enabled: false
+
+  make-100-tens:
+    name: Make 100 (tens)
+    enabled: false
+
+  make-100:
+    name: Make 100
+    enabled: false
+
+  addition-within-100-tens:
+    name: Addition within 100 (tens)
+    enabled: false
+
+  subtraction-within-100-tens:
+    name: Subtraction within 100 (tens)
+    enabled: false
+
+  make-1-1dp:
+    name: Make 1 (1 dp)
+    enabled: false
+
+  make-10-1dp:
+    name: Make 10 (1 dp)
+    enabled: false
+
+  times-tables-12:
+    name: Times Tables up to 12
+    enabled: true
+    config:
+      - vars:
+          a: '1..12'
+          b: '1..12'
+        operation: '{a} * {b}'
+
+# Section structure (references test IDs)
+sections:
+  - id: number-bonds
+    name: Number Bonds
+    color: green
+    subsections:
+      - name: Simple Addition and Subtraction
+        tests:
+          - addition-within-10
+          - subtraction-within-10
+          - addition-within-20
+          - subtraction-within-20
+
+      - name: Working with Tens
+        tests:
+          - know-10-and-1
+          - add-digit-to-multiple-of-10
+          - xxx-add-x0s
+          - xxx-sub-x0s
+
+      - name: Up to 100
+        tests:
+          - add-1x-to-multiple-of-10
+          - xxx-add-9
+          - xxx-sub-9
+
+      - name: Adding and Subtracting
+        tests:
+          - addition-and-subtraction-within-20
+          - xxx-addsub-x0s
+          - xxx-addsub-9
+          - add-x-to-x0
+
+  - id: times-tables
+    name: Times Tables
+    color: orange
+    subsections:
+      - name: Up to 12
+        tests:
+          - times-tables-12
+
+  - id: doubles
+    name: Doubles
+    color: yellow
+    subsections: []
+
+  - id: halves
+    name: Halves
+    color: yellow
+    subsections: []
+
+  - id: division-facts
+    name: Division Facts
+    color: orange
+    subsections: []
+
+  - id: square-numbers
+    name: Square Numbers
+    color: orange
+    subsections: []
