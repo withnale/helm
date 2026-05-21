@@ -16,6 +16,11 @@
 #     Supported operators: +, -, *, /, % (modulo)
 #     Supports brackets/parentheses for grouping
 #   - vars: Variable ranges (e.g., a: '1..10', b: '1..5:2')
+#     Also supports comma-separated values (e.g., c: '2,4,6,8' picks randomly from that set)
+#     Variables are evaluated in order, so later vars can reference earlier ones (e.g., b: '{a}..20')
+#   - calculated: Computed variables evaluated after vars (e.g., sum: '{a} + {b}')
+#     Evaluated in order, can reference both random vars and earlier calculated vars
+#     Can be used in operation, displayText, or answerConstraint
 #   - answerConstraint: Valid answer range (e.g., '1..20')
 #   - timeLimit: Time limit in seconds (overrides default)
 #   - answerCount: Number of answer buttons (overrides default)
@@ -24,16 +29,134 @@
 
 # Global defaults (can be overridden per test)
 reporting:
-  version: 'v2.7.0-76-gb01a8076'
+  version: 'v1.0-1-g343432'
   enabled: false
   url: 'http://localhost:8080/report'
 
 defaults:
   timeLimit: 60
   answerCount: 12
+  questionSize: large
 
 # Test definitions (indexed by test ID)
 definitions:
+  numberbonds1:
+    name: Number Bounds to 10
+    enabled: true
+    config:
+      - operation: '10 - {a}'
+        displayText: 'x + {a} = 10'
+        vars:
+          a: '1..10'
+        answerConstraint: '0..9'
+      - operation: '10 - {a}'
+        displayText: '{a} + x = 10'
+        vars:
+          a: '1..10'
+        answerConstraint: '0..9'
+      - operation: '10 - {a}'
+        displayText: '10 - {a} = x'
+        vars:
+          a: '1..10'
+        answerConstraint: '0..9'
+    reuseAnswers: false
+    answerCount: 6
+  tensandones1:
+    name: Tens and Ones [1]
+    enabled: true
+    config:
+      - operation: '{a} - {b} * 10'
+        displayText: '{a} is {b} tens and x ones'
+        vars:
+          a: '1..100'
+          b: '1..9'
+        answerConstraint: '1..9'
+      - operation: '{d}'
+        displayText: '{c} is x tens and {b} ones'
+        vars:
+          a: '0..90:10'
+          b: '1..9'
+        calculated:
+          c: '{a} + {b}'
+          d: '{a} / 10'
+        answerConstraint: '1..9'
+
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  tensandones2:
+    name: Tens and Ones [2]
+    enabled: true
+    config:
+      - operation: '{a} - {b} * 10'
+        displayText: '{a} is {b} tens and x ones'
+        vars:
+          a: '1..100'
+          b: '1..9'
+        answerConstraint: '1..9'
+      - operation: '{a} - {b} * 10'
+        displayText: '{a} is {b} tens and x ones'
+        vars:
+          a: '1..100'
+          b: '1..9'
+        answerConstraint: '11..19'
+      - operation: '{d}'
+        displayText: '{c} is x tens and {b} ones'
+        vars:
+          a: '0..90:10'
+          b: '1..9'
+        calculated:
+          c: '{a} + {b}'
+          d: '{a} / 10'
+        answerConstraint: '1..9'
+      - operation: '{d}'
+        displayText: '{c} is x tens and {b} ones'
+        vars:
+          a: '0..80:10'
+          b: '11..19'
+        calculated:
+          c: '{a} + {b}'
+          d: '{a} / 10'
+        answerConstraint: '1..9'
+
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  multiples-of-10:
+    name: Multiples of 10
+    enabled: true
+    questionSize: medium
+    config:
+      - operation: '{d} + 0'
+        displayText: '{a}, {b}, {c}, x, {e}'
+        vars:
+          a: '10..60:10'
+          l: '2,5,10'
+        calculated:
+          b: '{a} + {l}'
+          c: '{a} + (2 * {l})'
+          d: '{a} + (3 * {l})'
+          e: '{a} + (4 * {l})'
+        answerConstraint: '30..100:10'
+      - operation: '{b}'
+        displayText: '{e}, {d}, {c}, x, {a}'
+        vars:
+          a: '10..60:10'
+          l: '10'
+        calculated:
+          b: '{a} + {l}'
+          c: '{a} + (2 * {l})'
+          d: '{a} + (3 * {l})'
+          e: '{a} + (4 * {l})'
+        answerConstraint: '10..100:10'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
   add-3-single-digit:
     name: Add 3 single digits
     enabled: true
@@ -324,6 +447,7 @@ sections:
           - add-1x-to-multiple-of-10
           - xxx-add-9
           - xxx-sub-9
+          - add-3-single-digit
 
       - name: Adding and Subtracting
         tests:
@@ -331,7 +455,6 @@ sections:
           - xxx-addsub-x0s
           - xxx-addsub-9
           - add-x-to-x0
-          - add-3-single-digit
 
   - id: times-tables
     name: Times Tables
@@ -346,17 +469,23 @@ sections:
     color: yellow
     subsections: []
 
-  - id: halves
-    name: Halves
+  - id: towards
+    name: Working Towards
+    color: green
+    subsections:
+      - name: Number Bonds and Partitioning
+        tests:
+          - numberbonds1
+          - tensandones1
+          - tensandones2
+          - multiples-of-10
+
+  - id: expected
+    name: Expected Standard
     color: yellow
     subsections: []
 
-  - id: division-facts
-    name: Division Facts
-    color: orange
-    subsections: []
-
-  - id: square-numbers
-    name: Square Numbers
+  - id: greater-depth
+    name: Greater Depth
     color: orange
     subsections: []
