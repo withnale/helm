@@ -29,7 +29,7 @@
 
 # Global defaults (can be overridden per test)
 reporting:
-  version: 'v2.7.0-80-g7d1e6368'
+  version: 'v1.0-1-g343432'
   enabled: false
   url: 'http://localhost:8080/report'
 
