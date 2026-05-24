@@ -29,7 +29,7 @@
 
 # Global defaults (can be overridden per test)
 reporting:
-  version: 'v2.7.0-78-geddec698'
+  version: 'v1.0-1-g343432'
   enabled: false
   url: 'http://localhost:8080/report'
 
@@ -124,6 +124,163 @@ definitions:
     reuseAnswers: false
     answerCount: 6
     sort: true
+
+
+  add-10:
+    name: Add 10
+    questionSize: medium
+    config:
+      - operation: '{a}+{b}'
+        vars:
+          a: '1..80'
+          b: '10'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  sub-10:
+    name: Subtract 10
+    questionSize: medium
+    config:
+      - operation: '{a}+{b}'
+        vars:
+          a: '1..80'
+          b: '10'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  add-nearly-10:
+    name: Add nearly 10
+    questionSize: medium
+    config:
+      - operation: '{a}+{b}'
+        vars:
+          a: '1..80'
+          b: '9..11'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  sub-nearly-10:
+    name: Subtract nearly 10
+    questionSize: medium
+    config:
+      - operation: '{a}-{b}'
+        vars:
+          a: '1..80'
+          b: '9..11'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  add-with-overlap:
+    name: Addition with 1 different
+    questionSize: medium
+    config:
+      - operation: '{a1}+{b}'
+        vars:
+          a: '4..9'
+          b: '7..9'
+          tens: '0..10:10'
+        calculated:
+          a1: '{a} + {tens}'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  add-with-1-diff:
+    name: Addition with 1 different
+    questionSize: medium
+    config:
+      - operation: '{a2}+{b}'
+        displayText: 'If {a1} + {b} = {c1}\nWhat is {a2} + {b}'
+        vars:
+          a1: '1..80'
+          b: '1..20'
+          inc: '1,-1'
+        calculated:
+          c1: '{a1} + {b}'
+          a2: '{a1} + {inc}'
+        answerConstraint: '1..100'
+      - operation: '{a}+{b2}'
+        displayText: 'If {a} + {b1} = {c1}\nWhat is {a} + {b2}'
+        vars:
+          a: '1..80'
+          b1: '1..20'
+          inc: '1,-1'
+        calculated:
+          c1: '{a} + {b1}'
+          b2: '{b1} + {inc}'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  add-with-3-more:
+    name: Add with 3 more
+    questionSize: medium
+    config:
+      - operation: '{a2}+{b}'
+        displayText: 'If {a1} + {b} = {c1}\nWhat is {a2} + {b}'
+        vars:
+          a1: '1..80'
+          b: '1..20'
+          inc: '1..3'
+        calculated:
+          c1: '{a1} + {b}'
+          a2: '{a1} + {inc}'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+
+  subtract-with-1-more:
+    name: Subtract with 1 more
+    questionSize: medium
+    config:
+      - operation: '{a2}-{b}'
+        displayText: 'If {a1} - {b} = {c1}\nWhat is {a2} - {b}'
+        vars:
+          a1: '1..80'
+          b: '1..20'
+        calculated:
+          c1: '{a1} - {b}'
+          a2: '{a1} + 1'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  subtract-with-3-more:
+    name: Subtract with 3 more
+    questionSize: medium
+    config:
+      - operation: '{a2}-{b}'
+        displayText: 'If {a1} - {b} = {c1}\nWhat is {a2} - {b}'
+        vars:
+          a1: '1..80'
+          b: '1..20'
+          inc: '1..3'
+        calculated:
+          c1: '{a1} - {b}'
+          a2: '{a1} + {inc}'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
 
   multiples-of-10:
     name: Multiples of 10
@@ -456,18 +613,29 @@ sections:
           - xxx-addsub-9
           - add-x-to-x0
 
-  - id: times-tables
-    name: Times Tables
+  - id: add-subtract
+    name: Add and Subtract
+    color: yellow
+    subsections:
+      - name: Adding - Simple
+        tests:
+          - add-10
+          - add-nearly-10
+
+      - name: Subtract - Simple
+        tests:
+          - sub-10
+          - sub-nearly-10
+
+
+  - id: multiply-divide
+    name: Multiply and Divide
     color: orange
     subsections:
       - name: Up to 12
         tests:
           - times-tables-12
 
-  - id: doubles
-    name: Doubles
-    color: yellow
-    subsections: []
 
   - id: towards
     name: Working Towards
