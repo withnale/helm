@@ -29,7 +29,7 @@
 
 # Global defaults (can be overridden per test)
 reporting:
-  version: 'v2.7.1-82-gf6ef5e22'
+  version: 'v1.0-1-g343432'
   enabled: false
   url: 'http://localhost:8080/report'
 
@@ -152,8 +152,50 @@ definitions:
     answerCount: 6
     sort: true
 
-  add-nearly-10:
-    name: Add nearly 10
+  add-nearly-10a:
+    name: Add nearly 10 (a)
+    questionSize: medium
+    config:
+      - operation: '{a}+10'
+        vars:
+          a: '1..80'
+        answerConstraint: '1..100'
+      - operation: '{a}+10+1'
+        vars:
+          a: '1..80'
+        answerConstraint: '1..100'
+      - operation: '{a}+10-1'
+        vars:
+          a: '1..80'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  sub-nearly-10a:
+    name: Sub nearly 10 (a)
+    questionSize: medium
+    config:
+      - operation: '{a}-10'
+        vars:
+          a: '1..80'
+        answerConstraint: '1..100'
+      - operation: '{a}-10+1'
+        vars:
+          a: '1..80'
+        answerConstraint: '1..100'
+      - operation: '{a}-10-1'
+        vars:
+          a: '1..80'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  add-nearly-10b:
+    name: Add nearly 10 (b)
     questionSize: medium
     config:
       - operation: '{a}+{b}'
@@ -165,8 +207,8 @@ definitions:
     answerCount: 6
     sort: true
 
-  sub-nearly-10:
-    name: Subtract nearly 10
+  sub-nearly-10b:
+    name: Subtract nearly 10 (b)
     questionSize: medium
     config:
       - operation: '{a}-{b}'
@@ -620,12 +662,14 @@ sections:
       - name: Adding - Simple
         tests:
           - add-10
-          - add-nearly-10
+          - add-nearly-10a
+          - add-nearly-10b
 
       - name: Subtract - Simple
         tests:
           - sub-10
-          - sub-nearly-10
+          - sub-nearly-10a
+          - sub-nearly-10b
 
 
   - id: multiply-divide
