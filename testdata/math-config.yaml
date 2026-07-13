@@ -29,7 +29,7 @@
 
 # Global defaults (can be overridden per test)
 reporting:
-  version: 'v2.7.0-85-ge0d98055'
+  version: 'v1.0-1-g343432'
   enabled: false
   url: 'http://localhost:8080/report'
 
@@ -325,7 +325,7 @@ definitions:
 
 
   multiples-of-10:
-    name: Multiples of 10
+    name: Multiples of 2,5,10
     enabled: true
     questionSize: medium
     config:
@@ -362,9 +362,9 @@ definitions:
     config:
       - operation: '{a} + {b} + {c}'
         vars:
-          a: '1..5'
-          b: '1..5'
-          c: '1..5'
+          a: '1..6'
+          b: '1..6'
+          c: '1..6'
         answerConstraint: '1..15'
     reuseAnswers: true
   make-10:
@@ -454,7 +454,7 @@ definitions:
       - operation: '{a} + 9'
         vars:
           a: '1..100'
-        answerConstraint: '1..100'
+        answerConstraint: '1..99'
     reuseAnswers: true
     sort: true
 
@@ -464,8 +464,8 @@ definitions:
     config:
       - operation: '{a} - 9'
         vars:
-          a: '1..100'
-        answerConstraint: '1..100'
+          a: '1..99'
+        answerConstraint: '1..99'
     reuseAnswers: true
     sort: true
 
@@ -485,7 +485,7 @@ definitions:
     reuseAnswers: true
 
   add-x-to-x0:
-    name: Add X to multiple of 10
+    name: Add Y to X0
     enabled: true
     config:
       - operation: '{a} + {b}'
@@ -499,6 +499,42 @@ definitions:
           b: '10..90:10'
         answerConstraint: '1..100'
     reuseAnswers: true
+    sort: true
+
+  add-y-to-xx:
+    name: Add Y to XX
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..9'
+          b: '10..90'
+        answerConstraint: '1..100'
+      - operation: '{b} + {a}'
+        vars:
+          a: '0..9'
+          b: '10..90'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  add-1y-to-xx:
+    name: Add 1Y to XX
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '10..19'
+          b: '10..90'
+        answerConstraint: '1..100'
+      - operation: '{b} + {a}'
+        vars:
+          a: '10..19'
+          b: '10..90'
+        answerConstraint: '1..100'
+    reuseAnswers: false
+    answerCount: 6
     sort: true
 
 
@@ -620,6 +656,80 @@ definitions:
           a: '1..12'
           b: '1..12'
         operation: '{a} * {b}'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  times-tables-2:
+    name: 'Times Tables: 2'
+    enabled: true
+    config:
+      - vars:
+          a: '2'
+          b: '1..12'
+        operation: '{a} * {b}'
+      - vars:
+          a: '1..12'
+          b: '2'
+        operation: '{a} * {b}'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  times-tables-3:
+    name: 'Times Tables: 3'
+    enabled: true
+    config:
+      - vars:
+          a: '3'
+          b: '1..12'
+        operation: '{a} * {b}'
+      - vars:
+          a: '1..12'
+          b: '3'
+        operation: '{a} * {b}'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  times-tables-5:
+    name: 'Times Tables: 5'
+    enabled: true
+    config:
+      - vars:
+          a: '5'
+          b: '1..12'
+        operation: '{a} * {b}'
+      - vars:
+          a: '1..12'
+          b: '5'
+        operation: '{a} * {b}'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  times-tables-10:
+    name: 'Times Tables: 10'
+    enabled: true
+    config:
+      - vars:
+          a: '10'
+          b: '1..12'
+        operation: '{a} * {b}'
+        answerConstraint: '10..100:10'
+      - vars:
+          a: '1..12'
+          b: '10'
+        operation: '{a} * {b}'
+        answerConstraint: '10..100:10'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
 
 # Section structure (references test IDs)
 sections:
@@ -664,6 +774,8 @@ sections:
           - add-10
           - add-nearly-10a
           - add-nearly-10b
+          - add-y-to-xx
+          - add-1y-to-xx
 
       - name: Subtract - Simple
         tests:
@@ -678,6 +790,10 @@ sections:
     subsections:
       - name: Up to 12
         tests:
+          - times-tables-2
+          - times-tables-3
+          - times-tables-5
+          - times-tables-10
           - times-tables-12
 
 
