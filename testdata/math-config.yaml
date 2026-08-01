@@ -29,7 +29,7 @@
 
 # Global defaults (can be overridden per test)
 reporting:
-  version: 'v2.7.0-87-g7c5bca5f'
+  version: 'v1.0-1-g343432'
   enabled: false
   url: 'http://localhost:8080/report'
 
@@ -450,12 +450,17 @@ definitions:
   xxx-add-9:
     name: Adding 9
     enabled: true
+    questionSize: medium
     config:
       - operation: '{a} + 9'
+        displayText: 'If {a} + 10 = {b}\n  {a} + 9 ='
         vars:
-          a: '1..100'
-        answerConstraint: '1..99'
-    reuseAnswers: true
+          a: '1..999'
+        calculated:
+          b: '{a} + 10'
+        answerConstraint: '1..999'
+    reuseAnswers: false
+    answerCount: 6
     sort: true
 
   xxx-sub-9:
@@ -464,10 +469,73 @@ definitions:
     config:
       - operation: '{a} - 9'
         vars:
-          a: '1..99'
-        answerConstraint: '1..99'
-    reuseAnswers: true
+          a: '1..999'
+        answerConstraint: '1..999'
+    reuseAnswers: false
+    answerCount: 6
     sort: true
+
+  xxx-add-8:
+    name: Adding 8
+    enabled: true
+    questionSize: medium
+    config:
+      - operation: '{a} + 8'
+        displayText: 'If {a} + 10 = {b}\n  {a} + 8 ='
+        vars:
+          a: '1..999'
+        calculated:
+          b: '{a} + 10'
+        answerConstraint: '1..999'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  xxx-add-11:
+    name: Adding 11
+    enabled: true
+    questionSize: medium
+    config:
+      - operation: '{a} + 11'
+        displayText: 'If {a} + 10 = {b}\n  {a} + 11 ='
+        vars:
+          a: '1..999'
+        calculated:
+          b: '{a} + 10'
+        answerConstraint: '1..999'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+  xxx-add-12:
+    name: Adding 12
+    enabled: true
+    questionSize: medium
+    config:
+      - operation: '{a} + 12'
+        displayText: 'If {a} + 10 = {b}\n  {a} + 12 ='
+        vars:
+          a: '1..999'
+        calculated:
+          b: '{a} + 10'
+        answerConstraint: '1..999'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
+
+  xxx-sub-8:
+    name: Subtracting 8
+    enabled: true
+    config:
+      - operation: '{a} - 8'
+        vars:
+          a: '1..999'
+        answerConstraint: '1..999'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
+
 
 
   xxx-addsub-9:
@@ -590,9 +658,12 @@ definitions:
     config:
       - operation: '{a} + {b}'
         vars:
-          a: '0..90:10'
+          a: '0..990:10'
           b: '0..9'
-        answerConstraint: '0..99'
+        answerConstraint: '0..999'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
 
   add-1x-to-multiple-of-10:
     name: Add 1X to multiple of 10
@@ -600,10 +671,35 @@ definitions:
     config:
       - operation: '{a} + {b}'
         vars:
-          a: '0..90:10'
+          a: '0..990:10'
           b: '11..19'
-        answerConstraint: '0..99'
+        answerConstraint: '0..999'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
 
+  adding-columns:
+    name: Adding column digits
+    enabled: true
+    config:
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..999'
+          b: '0..9'
+        answerConstraint: '0..999'
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..999'
+          b: '0..90:10'
+        answerConstraint: '0..999'
+      - operation: '{a} + {b}'
+        vars:
+          a: '0..999'
+          b: '0..900:100'
+        answerConstraint: '0..999'
+    reuseAnswers: false
+    answerCount: 6
+    sort: true
 
   addition-and-subtraction-within-20:
     name: Addition & Subtraction within 20
@@ -751,11 +847,13 @@ sections:
           - xxx-add-x0s
           - xxx-sub-x0s
 
-      - name: Up to 100
+      - name: Adding exact numbers
         tests:
           - add-1x-to-multiple-of-10
+          - xxx-add-8
           - xxx-add-9
-          - xxx-sub-9
+          - xxx-add-11
+          - xxx-add-12
           - add-3-single-digit
 
       - name: Adding and Subtracting
@@ -776,6 +874,7 @@ sections:
           - add-nearly-10b
           - add-y-to-xx
           - add-1y-to-xx
+          - adding-columns
 
       - name: Subtract - Simple
         tests:
